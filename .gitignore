@@ -1,7 +1,94 @@
-runs/
+# ----------------------------
+# Editor / OS junk
+# ----------------------------
+*~
+*.swp
+*.swo
+.DS_Store
+
+# ----------------------------
+# Simulation outputs
+# ----------------------------
 *.vcd
-*a.out
-*log
-*obj_dir
-*sim_build
-*results.xml
+*.fst
+*.ghw
+*.out
+*.log
+*.jou
+*.wdb
+xsim.dir/
+obj_dir/
+sim_build/
+results.xml
+
+# ----------------------------
+# Build directories
+# ----------------------------
+build/
+dist/
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.o
+*.d
+*.a
+
+# ----------------------------
+# Quartus generated files
+# ----------------------------
+db/
+incremental_db/
+output_files/
+greybox_tmp/
+.qsys_edit/
+*.rpt
+*.summary
+*.done
+*.smsg
+*.pin
+*.jdi
+*.sof
+*.pof
+*.jam
+*.rbf
+*.cdf
+*.qws
+*.bak
+*.orig
+
+# ----------------------------
+# Quartus temporary / report files
+# ----------------------------
+*.qmsg
+*.eqn
+*.fit.*
+*.map.*
+*.sta.*
+*.asm.*
+*.flow.*
+*.pow.*
+*.tan.*
+
+# ----------------------------
+# Waveform / test artifacts
+# ----------------------------
+waves/
+dump.vcd
+trace.vcd
+
+# ----------------------------
+# Python / cocotb
+# ----------------------------
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# ----------------------------
+# CMake / compiled software
+# ----------------------------
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
