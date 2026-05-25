@@ -20,38 +20,46 @@
     logic [31:0] memReadWord, ioBuffer, memReadSized;
     logic [1:0] byteOffset;
     logic weAddrValid;      // active when saving (WE) to valid memory address
-       
-    (* rom_style="{distributed | block}" *)
-    (* ram_decomp = "power" *) logic [31:0] memory [0:16383];
+	 
+	 logic [31:0] memory [0:16383];
+
     
 // Memory.sv (drop-in replacement for the init block)
-string  memfile;
-integer first;
-integer idx;
+`ifdef SIMULATION
 
-initial begin
-  memfile = "otter_mem.mem";
-  void'($value$plusargs("MEM=%s", memfile));
+	string  memfile;
+	integer first;
+	integer idx;
+	integer plusarg_found;
 
-  $display("INFO: Loading MEM image: %0s", memfile);
-  $readmemh(memfile, memory, 0, 16383);
+	initial begin
+	  memfile = "memory.mem";
+	  plusarg_found = $value$plusargs("MEM=%s", memfile);
 
-  first = -1;
-  for (idx = 0; idx < 16384; idx = idx + 1) begin
-    if (memory[idx] !== 32'h0) begin
-      first = idx;
-      idx   = 16384; // break
-    end
-  end
+	  $display("INFO: Loading MEM image: %0s", memfile);
+	  $readmemh(memfile, memory, 0, 16383);
 
-  if (first == -1)
-    $fatal(1, "FATAL: MEM image empty or not found: %0s", memfile);
-  else
-    $display("First nonzero word index = %0d (PC byte address = 0x%08h)", first, first<<2);
-end
+	  first = -1;
+	  for (idx = 0; idx < 16384; idx = idx + 1) begin
+		 if (memory[idx] !== 32'h0) begin
+			first = idx;
+			idx   = 16384; // break
+		 end
+	  end
 
+	  if (first == -1)
+		 $fatal(1, "FATAL: MEM image empty or not found: %0s", memfile);
+	  else
+		 $display("First nonzero word index = %0d (PC byte address = 0x%08h)", first, first<<2);
+	end
 
+`else
 
+	initial begin
+		$readmemh("memory.mem", memory, 0, 16383);
+	end
+
+`endif
 
     
     assign wordAddr2 = MEM_ADDR2[15:2];
