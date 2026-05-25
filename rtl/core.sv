@@ -3,7 +3,7 @@
 import isa_pkg::*;
     
 
-module OTTER_PIP(input clk,
+module core(input clk,
                 input RST,
                 input intr,
                 input [31:0] iobus_in,
