@@ -1,8 +1,15 @@
 `timescale 1ns / 1ps
 			
-module IMMED_GEN(ir, U_type, I_type, S_type, J_type, B_type);				
-   input [31:0] ir;
-   output [31:0] U_type, I_type, S_type, J_type, B_type;					
+module IMMED_GEN(
+	input		[31:0] 	ir, 
+	output	[31:0] 	U_type, 
+	output 	[31:0] 	I_type, 
+	output 	[31:0] 	S_type, 
+	output 	[31:0] 	J_type, 
+	output 	[31:0] 	B_type
+);	
+	
+				
    assign I_type = {{21{ir[31]}}, ir[30:25], ir[24:20]};
    assign S_type = {{21{ir[31]}}, ir[30:25], ir[11:7]};
    assign B_type = {{20{ir[31]}}, ir[7], ir[30:25], ir[11:8], 1'b0};

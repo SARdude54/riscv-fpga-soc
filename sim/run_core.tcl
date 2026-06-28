@@ -36,12 +36,19 @@ vlog -sv +define+SIMULATION +incdir+rtl rtl/core.sv
 
 vlog -sv +define+SIMULATION +incdir+rtl tests/TB_core/TB_core.sv
 
-# Run simulation
-# +MEM=memory.mem goes into $value$plusargs("MEM=%s", memfile)
-# in your Memory.sv simulation branch.
+# Select memory file.
+# Default if user does not pass MEM_FILE from Tcl command line.
+if {![info exists MEM_FILE]} {
+    set MEM_FILE "memory.mem"
+}
 
-vsim -voptargs=+acc work.TB_core +MEM=memory.mem
+puts "INFO: Using memory file: $MEM_FILE"
 
-add wave -r sim:/TB_core/*
+vsim -voptargs=+acc work.TB_core +MEM=$MEM_FILE
+
+view wave
+do core_wave.do
+
+run -all
 
 run -all

@@ -30,8 +30,30 @@ SIMULATOR_ARGS := --binary --timing --trace --trace-structs \
 SIM_TOP_FLAG := --top-module $(TB_TOP)
 SIMULATOR_BINARY := ./obj_dir/V*
 SIMULATOR_SRCS := $(foreach src,$(ORDERED_SRCS),$(realpath $(src))) *.sv
-# Optional use of Icarus as Linter and Simulator
 
+# Questa / Quartus Prime simulation
+QUESTA_HOME ?= /home/sardude54/intelFPGA_lite/questa_fse/linux_x86_64
+VSIM        ?= $(QUESTA_HOME)/vsim
+
+# Your Questa Tcl/DO script
+QSIM_SCRIPT ?= sim/run_core.tcl
+
+# Optional waveform setup script used inside run_core.tcl
+WAVE_SCRIPT ?= core_wave.do
+
+# Memory image passed into Memory.sv through +MEM=<file>
+MEM_IMG ?= $(abspath otter_mem.mem)
+
+# GUI mode by default. Override with GUI=0 for command-line mode.
+GUI ?= 1
+
+ifeq ($(GUI),1)
+VSIM_MODE := -gui
+else
+VSIM_MODE := -c
+endif
+
+# Optional use of Icarus as Linter and Simulator
 ifdef ICARUS
 SIMULATOR := iverilog
 SIMULATOR_ARGS := -g2012
@@ -151,6 +173,26 @@ FORCE: ;
 
 openroad:
 	scripts/openroad_launch.sh | openroad
+
+.PHONY: qsim
+qsim:
+	@printf "\n$(GREEN)$(BOLD) ----- Running Questa Simulation ----- $(RESET)\n"
+	@printf "Script:   $(QSIM_SCRIPT)\n"
+	@printf "MEM_IMG:  $(MEM_IMG)\n"
+	@printf "Wave DO:  $(WAVE_SCRIPT)\n"
+	$(VSIM) $(VSIM_MODE) -do "set MEM_FILE {$(MEM_IMG)}; set WAVE_DO {$(WAVE_SCRIPT)}; do $(QSIM_SCRIPT)"
+
+.PHONY: qsim_cli
+qsim_cli:
+	@GUI=0 $(MAKE) qsim
+
+.PHONY: qsim_tb
+qsim_tb:
+	@$(MAKE) qsim MEM_IMG=$(abspath tb_only_test.mem)
+
+.PHONY: qsim_clean
+qsim_clean:
+	rm -rf work transcript vsim.wlf wave.vcd sim_log.txt
 
 .PHONY: clean
 clean:

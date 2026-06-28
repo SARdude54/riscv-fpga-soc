@@ -25,6 +25,8 @@ typedef struct packed{
     logic [4:0] rd_addr;
     logic [31:0] rs1;
     logic [31:0] rs2;
+	 logic [31:0] aluAin;
+	 logic [31:0] aluBin;
     logic [31:0] alu_result;
     logic [31:0] rd;
     // logic rs1_used;

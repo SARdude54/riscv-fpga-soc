@@ -1,37 +1,40 @@
-# VS code junk
-*.vscode
-
 # ----------------------------
 # Editor / OS junk
 # ----------------------------
+.vscode/
 *~
 *.swp
 *.swo
 .DS_Store
 
 # ----------------------------
-# Simulation outputs
+# Questa / ModelSim outputs
 # ----------------------------
+work/
+transcript
+vsim.wlf
+*.wlf
 *.vcd
 *.fst
 *.ghw
-*.out
 *.log
-*.jou
-*.wdb
-xsim.dir/
+
+# ----------------------------
+# Verilator / Icarus outputs
+# ----------------------------
 obj_dir/
 sim_build/
+a.out
+*.out
 results.xml
 
 # ----------------------------
-# Build directories
+# Build directories / compiled software
 # ----------------------------
 build/
 dist/
 *.elf
 *.bin
-*.hex
 *.map
 *.lst
 *.o
@@ -39,13 +42,17 @@ dist/
 *.a
 
 # ----------------------------
-# Quartus generated files
+# Quartus generated directories
 # ----------------------------
 db/
 incremental_db/
 output_files/
 greybox_tmp/
 .qsys_edit/
+
+# ----------------------------
+# Quartus generated files
+# ----------------------------
 *.rpt
 *.summary
 *.done
@@ -60,10 +67,6 @@ greybox_tmp/
 *.qws
 *.bak
 *.orig
-
-# ----------------------------
-# Quartus temporary / report files
-# ----------------------------
 *.qmsg
 *.eqn
 *.fit.*
@@ -73,6 +76,13 @@ greybox_tmp/
 *.flow.*
 *.pow.*
 *.tan.*
+
+# Questa / ModelSim generated files
+modelsim.ini
+sim_log.txt
+
+# Quartus NativeLink / generated simulation directory
+simulation/
 
 # ----------------------------
 # Waveform / test artifacts

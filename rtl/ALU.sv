@@ -10,19 +10,19 @@ module ALU(
     always @(*)
         begin
         case(alu_fun)
-        4'b0000: assign result = srcA + srcB; //add
-        4'b1000: assign result = srcA - srcB; //sub
-        4'b0110: assign result = srcA | srcB; //or
-        4'b0111: assign result = srcA & srcB; //and        
-        4'b0100: assign result = srcA ^ srcB; //xor
-        4'b0101: assign result = srcA >> srcB[4:0]; //srl
-        4'b0001: assign result = srcA << srcB[4:0]; //sll
-        4'b1101: assign result = $signed(srcA) >>> srcB[4:0]; //sra
+        4'b0000: result = srcA + srcB; //add
+        4'b1000: result = srcA - srcB; //sub
+        4'b0110: result = srcA | srcB; //or
+        4'b0111: result = srcA & srcB; //and        
+        4'b0100: result = srcA ^ srcB; //xor
+        4'b0101: result = srcA >> srcB[4:0]; //srl
+        4'b0001: result = srcA << srcB[4:0]; //sll
+        4'b1101: result = $signed(srcA) >>> srcB[4:0]; //sra
    //slt  
-        4'b0010: assign result = ($signed(srcA) < $signed(srcB))? 1:0;
-        4'b0011: assign result = srcA < srcB ? 1:0;//sltu
-        4'b1001: assign result = srcA; // lui-copy
-        default: assign result = 32'hDEADBEEF;
+        4'b0010: result = ($signed(srcA) < $signed(srcB))? 1:0;
+        4'b0011: result = srcA < srcB ? 1:0;//sltu
+        4'b1001: result = srcA; // lui-copy
+        default: result = 32'hDEADBEEF;
         endcase
         end
 endmodule

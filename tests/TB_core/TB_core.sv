@@ -22,7 +22,7 @@ module TB_core;
   // VCD
   initial begin
     $dumpfile("wave.vcd");
-    $dumpvars(0, TB_OTTER);
+    $dumpvars(0, TB_core);
   end
 
   // Reset
@@ -34,8 +34,7 @@ module TB_core;
     repeat (5) @(posedge clk);
     rst = 1'b0;
 
-    // drive some IO
-    in  = 32'h0000_0002;
+    
 
     // run up to a limit unless MMIO write tells us to finish
     repeat (20000) @(posedge clk);  // ~200 us at 100 MHz
