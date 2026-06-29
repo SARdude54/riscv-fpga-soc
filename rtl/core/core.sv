@@ -65,8 +65,13 @@ module core(input clk,
 	
 	//pipeline register
 	always_ff @(posedge clk) begin //
-	  de_inst.instruction <= IR;
-	  de_inst.pc <= pc;
+		if(RST) begin
+			de_inst.instruction <= 32'b0;
+			de_inst.pc <= 32'b0;
+		end begin
+			de_inst.instruction <= IR;
+			de_inst.pc <= pc;
+		end
 	end 
 
 
@@ -156,10 +161,18 @@ module core(input clk,
 	//pipeline register
 	always_ff @(posedge clk) begin
 
-	  ex_inst.opcode <= OPCODE;
-	  ex_inst.mem_type <= de_inst.instruction[13:12];
-	  ex_inst.mem_size <= de_inst.instruction[14];
-	  ex_inst <= de_inst;
+	if(RST) begin
+		ex_inst.opcode <= opcode_t'(7'b0);
+		ex_inst.mem_type <= 2'b0;
+		ex_inst.mem_size <= 0;
+		ex_inst <= '0;
+	end begin 
+		ex_inst.opcode <= OPCODE;
+		ex_inst.mem_type <= de_inst.instruction[13:12];
+		ex_inst.mem_size <= de_inst.instruction[14];
+		ex_inst <= de_inst;
+	
+	end
 	  
 	end    
 
@@ -189,8 +202,13 @@ module core(input clk,
 	); // the ALU
 		
 	always_ff @(posedge clk) begin
-		mem_inst.alu_result <= alu_result;
-		mem_inst <= ex_inst;
+		if(RST) begin
+			mem_inst.alu_result <= 32'b0;
+			mem_inst <= 'b0;
+		end else begin
+			mem_inst.alu_result <= alu_result;
+			mem_inst <= ex_inst;
+		end
 	end
 
 
@@ -200,8 +218,13 @@ module core(input clk,
 	assign iobus_out = mem_inst.rs2;
 
 	always_ff @(posedge clk) begin //
-		wb_inst.mem_data <= mem_data;
-		wb_inst <= mem_inst;
+		if(RST) begin
+			wb_inst.mem_data <= 32'b0;
+			wb_inst <= 'b0;
+		end else begin
+			wb_inst.mem_data <= mem_data;
+			wb_inst <= mem_inst;
+		end
 	end
 
 

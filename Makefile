@@ -1,8 +1,8 @@
 INC_DIR := ./include
 
 # Tops
-DUT_TOP ?= OTTER_PIP        # RTL/synthesis/OpenLane top
-TB_TOP  ?= TB_OTTER         # simulation/testbench top
+DUT_TOP ?= core        # RTL/synthesis/OpenLane top
+TB_TOP  ?= TB_core         # simulation/testbench top
 
 # Sources
 RTL_SRCS := $(shell find rtl -type f \( -name '*.sv' -o -name '*.v' \))
@@ -35,23 +35,16 @@ SIMULATOR_SRCS := $(foreach src,$(ORDERED_SRCS),$(realpath $(src))) *.sv
 QUESTA_HOME ?= /home/sardude54/intelFPGA_lite/questa_fse/linux_x86_64
 VSIM        ?= $(QUESTA_HOME)/vsim
 
-# Your Questa Tcl/DO script
 QSIM_SCRIPT ?= sim/run_core.tcl
+WAVE_SCRIPT ?= sim/waves/core_wave.do
 
-# Optional waveform setup script used inside run_core.tcl
-WAVE_SCRIPT ?= core_wave.do
+# Default Questa testbench
+QSIM_TB_SRC ?= tests/TB_core/TB_core.sv
+QSIM_TB_TOP ?= TB_core
 
-# Memory image passed into Memory.sv through +MEM=<file>
-MEM_IMG ?= $(abspath otter_mem.mem)
+MEM_IMG ?= $(abspath memory.mem)
 
-# GUI mode by default. Override with GUI=0 for command-line mode.
 GUI ?= 1
-
-ifeq ($(GUI),1)
-VSIM_MODE := -gui
-else
-VSIM_MODE := -c
-endif
 
 # Optional use of Icarus as Linter and Simulator
 ifdef ICARUS
@@ -87,7 +80,7 @@ TEST_ORANGE := $(shell tput setaf 214)
 TEST_RED := $(shell tput setaf 1)
 TEST_RESET := $(shell tput sgr0)
 
-MEM_IMG ?= $(abspath otter_mem.mem)
+MEM_IMG ?= $(abspath sim/mem/memory.mem)
 
 all: lint_all tests
 
@@ -178,9 +171,28 @@ openroad:
 qsim:
 	@printf "\n$(GREEN)$(BOLD) ----- Running Questa Simulation ----- $(RESET)\n"
 	@printf "Script:   $(QSIM_SCRIPT)\n"
+	@printf "TB_SRC:   $(QSIM_TB_SRC)\n"
+	@printf "TB_TOP:   $(QSIM_TB_TOP)\n"
 	@printf "MEM_IMG:  $(MEM_IMG)\n"
 	@printf "Wave DO:  $(WAVE_SCRIPT)\n"
-	$(VSIM) $(VSIM_MODE) -do "set MEM_FILE {$(MEM_IMG)}; set WAVE_DO {$(WAVE_SCRIPT)}; do $(QSIM_SCRIPT)"
+	$(VSIM) $(VSIM_MODE) -do "set MEM_FILE {$(MEM_IMG)}; set WAVE_DO {$(WAVE_SCRIPT)}; set TB_SRC {$(QSIM_TB_SRC)}; set TB_TOP {$(QSIM_TB_TOP)}; do $(QSIM_SCRIPT)"
+
+.PHONY: qsim_core
+.PHONY: qsim_core
+qsim_core:
+	@$(MAKE) qsim \
+		QSIM_TB_SRC=tests/TB_core/TB_core.sv \
+		QSIM_TB_TOP=TB_core \
+		MEM_IMG=$(abspath sim/mem/memory.mem) \
+		WAVE_SCRIPT=sim/waves/core_wave.do
+
+.PHONY: qsim_core_no_mem
+qsim_core_no_mem:
+	@$(MAKE) qsim \
+		QSIM_TB_SRC=tests/TB_core_no_mem/TB_core_no_mem.sv \
+		QSIM_TB_TOP=TB_core_no_mem \
+		MEM_IMG=$(abspath sim/mem/tb_only_test.mem) \
+		WAVE_SCRIPT=core_no_mem_wave.do
 
 .PHONY: qsim_cli
 qsim_cli:

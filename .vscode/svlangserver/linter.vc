@@ -1,0 +1,7 @@
+-v /home/sardude54/intelFPGA-workspace/RISC-V/rtl/isa_pkg.sv
++incdir+/home/sardude54/intelFPGA-workspace/RISC-V/rtl
++incdir+/home/sardude54/intelFPGA-workspace/RISC-V/tests/TB_core_no_mem
++incdir+/home/sardude54/intelFPGA-workspace/RISC-V/tests/TB_core
++incdir+/home/sardude54/intelFPGA-workspace/RISC-V/rtl
++incdir+/home/sardude54/intelFPGA-workspace/RISC-V/tests/TB_core_no_mem
++incdir+/home/sardude54/intelFPGA-workspace/RISC-V/tests/TB_core

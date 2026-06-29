@@ -1,107 +1,46 @@
 # ----------------------------
-# Editor / OS junk
+# Quartus generated files
 # ----------------------------
-.vscode/
-*~
-*.swp
-*.swo
-.DS_Store
+db/
+incremental_db/
+output_files/
+*.rpt
+*.summary
+*.smsg
+*.done
+*.sof
+*.pof
+*.jdi
+*.pin
+*.qws
+*.cdf
+*.bak
+*.orig
+*_nativelink_simulation.rpt
 
 # ----------------------------
-# Questa / ModelSim outputs
+# Questa / ModelSim generated
 # ----------------------------
 work/
 transcript
 vsim.wlf
 *.wlf
 *.vcd
-*.fst
-*.ghw
-*.log
-
-# ----------------------------
-# Verilator / Icarus outputs
-# ----------------------------
-obj_dir/
-sim_build/
-a.out
-*.out
-results.xml
-
-# ----------------------------
-# Build directories / compiled software
-# ----------------------------
-build/
-dist/
-*.elf
-*.bin
-*.map
-*.lst
-*.o
-*.d
-*.a
-
-# ----------------------------
-# Quartus generated directories
-# ----------------------------
-db/
-incremental_db/
-output_files/
-greybox_tmp/
-.qsys_edit/
-
-# ----------------------------
-# Quartus generated files
-# ----------------------------
-*.rpt
-*.summary
-*.done
-*.smsg
-*.pin
-*.jdi
-*.sof
-*.pof
-*.jam
-*.rbf
-*.cdf
-*.qws
-*.bak
-*.orig
-*.qmsg
-*.eqn
-*.fit.*
-*.map.*
-*.sta.*
-*.asm.*
-*.flow.*
-*.pow.*
-*.tan.*
-
-# Questa / ModelSim generated files
 modelsim.ini
 sim_log.txt
-
-# Quartus NativeLink / generated simulation directory
 simulation/
 
 # ----------------------------
-# Waveform / test artifacts
+# Verilator / Icarus generated
 # ----------------------------
-waves/
-dump.vcd
-trace.vcd
+obj_dir/
+a.out
+*.log
 
 # ----------------------------
-# Python / cocotb
+# Editor junk
 # ----------------------------
-__pycache__/
-*.pyc
-.pytest_cache/
-
-# ----------------------------
-# CMake / compiled software
-# ----------------------------
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-compile_commands.json
+*~
+*.swp
+*.swo
+*.bak
