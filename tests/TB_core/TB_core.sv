@@ -5,6 +5,11 @@ module TB_core;
   logic clk, rst, wr;
   logic [31:0] in, out, addr;
 
+  localparam int TIMEOUT_CYCLES = 20000;
+  localparam logic [31:0] TEST_STATUS_ADDR = 32'h0001_0000;
+  localparam logic [31:0] PASS_CODE = 32'd1;
+  localparam logic [31:0] FAIL_CODE = 32'd2;
+
   // DUT
   core UUT (
     .RST       (rst),
@@ -43,10 +48,23 @@ module TB_core;
   end
 
 
-  always @(posedge clk) begin
+// MMIO completion monitor
+  always_ff @(posedge clk) begin
     if (!rst && wr) begin
       $display("MMIO write: addr=%h data=%h @%0t", addr, out, $time);
-      $finish;
+
+      if (addr == TEST_STATUS_ADDR) begin
+        if (out == PASS_CODE) begin
+          $display("PASS: RV32I no-hazard assembly test passed");
+          $finish;
+        end
+        else if (out == FAIL_CODE) begin
+          $fatal(1, "FAIL: RV32I no-hazard assembly test failed");
+        end
+        else begin
+          $fatal(1, "FAIL: unknown test status code %h", out);
+        end
+      end
     end
   end
 
