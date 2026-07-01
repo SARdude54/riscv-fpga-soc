@@ -33,7 +33,7 @@
 	integer plusarg_found;
 
 	initial begin
-	  memfile = "memory.mem";
+	  memfile = "rtl/memory.mem";
 	  plusarg_found = $value$plusargs("MEM=%s", memfile);
 
 	  $display("INFO: Loading MEM image: %0s", memfile);
@@ -56,7 +56,7 @@
 `else
 
 	initial begin
-		$readmemh("memory.mem", memory, 0, 16383);
+		$readmemh("rtl/memory.mem", memory, 0, 16383);
 	end
 
 `endif

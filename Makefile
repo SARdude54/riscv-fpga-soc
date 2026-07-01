@@ -186,14 +186,6 @@ qsim_core:
 		MEM_IMG=$(abspath sim/mem/memory.mem) \
 		WAVE_SCRIPT=sim/waves/core_wave.do
 
-.PHONY: qsim_core_no_mem
-qsim_core_no_mem:
-	@$(MAKE) qsim \
-		QSIM_TB_SRC=tests/TB_core_no_mem/TB_core_no_mem.sv \
-		QSIM_TB_TOP=TB_core_no_mem \
-		MEM_IMG=$(abspath sim/mem/tb_only_test.mem) \
-		WAVE_SCRIPT=core_no_mem_wave.do
-
 .PHONY: qsim_cli
 qsim_cli:
 	@GUI=0 $(MAKE) qsim

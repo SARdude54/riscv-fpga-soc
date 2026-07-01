@@ -39,7 +39,7 @@
 
 set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CGXFC7C7F23C8
-set_global_assignment -name TOP_LEVEL_ENTITY "riscv-soc"
+set_global_assignment -name TOP_LEVEL_ENTITY core
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 25.1STD.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "00:17:13  JUNE 29, 2026"
 set_global_assignment -name LAST_QUARTUS_VERSION "25.1std.0 Lite Edition"
@@ -47,14 +47,15 @@ set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-set_global_assignment -name SYSTEMVERILOG_FILE tests/TB_core_no_mem/TB_core_no_mem.sv
-set_global_assignment -name SYSTEMVERILOG_FILE tests/TB_core/TB_core.sv
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name SOURCE_FILE rtl/memory.mem
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/utils/reg_nb_sclr.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/utils/mux_4t1_nb.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/utils/mux_2t1_nb.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/memory/Memory.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/core/RegFile.sv
-set_global_assignment -name SYSTEMVERILOG_FILE rtl/core/pip_reg.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/core/isa_pkg.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/core/IMMED_GEN.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/core/CU_FSM.sv
@@ -63,3 +64,5 @@ set_global_assignment -name SYSTEMVERILOG_FILE rtl/core/core.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/core/BRANCH_COND_GEN.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/core/BRANCH_ADDR_GEN.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/core/ALU.sv
+set_global_assignment -name SOURCE_FILE "db/riscv-soc.cmp.rdb"
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

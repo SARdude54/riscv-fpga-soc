@@ -37,21 +37,21 @@ add wave -noupdate /TB_core/UUT/memWrite
 add wave -noupdate /TB_core/UUT/mem_op
 add wave -noupdate /TB_core/UUT/memRead
 add wave -noupdate /TB_core/UUT/memRead2
-add wave -noupdate /TB_core/UUT/pc_source
-add wave -noupdate /TB_core/UUT/pc_sel
+add wave -noupdate -expand -group {PC Core Signals} /TB_core/UUT/pc_source
+add wave -noupdate -expand -group {PC Core Signals} /TB_core/UUT/pc_sel
+add wave -noupdate -expand -group {PC Core Signals} /TB_core/UUT/pc
+add wave -noupdate -expand -group {PC Core Signals} /TB_core/UUT/pc_value
+add wave -noupdate -expand -group {PC Core Signals} /TB_core/UUT/jalr_pc
+add wave -noupdate -expand -group {PC Core Signals} /TB_core/UUT/branch_pc
+add wave -noupdate -expand -group {PC Core Signals} /TB_core/UUT/jump_pc
+add wave -noupdate -expand -group {PC Core Signals} /TB_core/UUT/pcWrite
+add wave -noupdate -expand -group {PC Core Signals} /TB_core/UUT/jal_pc
 add wave -noupdate /TB_core/UUT/rf_wr_sel
 add wave -noupdate /TB_core/UUT/alu_fun
 add wave -noupdate /TB_core/UUT/de_inst
 add wave -noupdate /TB_core/UUT/ex_inst
 add wave -noupdate /TB_core/UUT/mem_inst
 add wave -noupdate /TB_core/UUT/wb_inst
-add wave -noupdate /TB_core/UUT/pc
-add wave -noupdate /TB_core/UUT/pc_value
-add wave -noupdate /TB_core/UUT/jalr_pc
-add wave -noupdate /TB_core/UUT/branch_pc
-add wave -noupdate /TB_core/UUT/jump_pc
-add wave -noupdate /TB_core/UUT/pcWrite
-add wave -noupdate /TB_core/UUT/jal_pc
 add wave -noupdate /TB_core/UUT/mem_data
 add wave -noupdate /TB_core/UUT/opcode
 add wave -noupdate /TB_core/UUT/OPCODE
@@ -165,7 +165,7 @@ add wave -noupdate /TB_core/UUT/WB_mux/D_OUT
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {0 ps} 0}
 quietly wave cursor active 0
-configure wave -namecolwidth 192
+configure wave -namecolwidth 369
 configure wave -valuecolwidth 100
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
@@ -179,4 +179,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {248832 ps}
+WaveRestoreZoom {0 ps} {219818 ps}

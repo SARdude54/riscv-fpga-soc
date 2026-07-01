@@ -25,15 +25,30 @@ module TB_core_no_mem;
 		$dumpvars(0, TB_core_no_mem);
 	end
 	
+	// define set instruction tasks
 	task set_instruction (
 		input logic [31:0] ir_bin
-	);
+		);
 	
-	force UUT.IR = ir_bin;
+		force UUT.IR = ir_bin;
+		repeat (5) @(posedge clk);
+		release UUT.IR;
 	
-	repeat (5) @(posedge clk);
+	endtask
 	
-	release UUT.IR;
+	task set_nop();
+	
+		set_instruction(32'h00000013);
+	
+	endtask
+
+	
+	// test r-type instructions
+	// 01900293
+	// addi t0, zero, 25
+	task test_rtype();
+	
+	set_instruction(32'h01900293);
 	
 	endtask
 
@@ -46,7 +61,8 @@ module TB_core_no_mem;
 		repeat (5) @(posedge clk);
 		rst = 1'b0;
 
-		set_instruction(8'h01900293);
+		set_instruction(32'h01900293);
+		set_nop();
 
 		// run up to a limit unless MMIO write tells us to finish
 		repeat (20000) @(posedge clk);  // ~200 us at 100 MHz

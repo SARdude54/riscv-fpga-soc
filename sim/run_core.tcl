@@ -1,29 +1,11 @@
 # sim/run_core.tcl
-#
-# Questa/ModelSim RTL simulation script for the RISC-V core.
-#
-# Expected project structure:
-#
-#   rtl/
-#     core/
-#     memory/
-#     utils/
-#   tests/
-#     TB_core/
-#   sim/
-#     waves/
-#     mem/
-#
-# This script is intended for simulation only.
-# It defines SIMULATION so Memory.sv can use +MEM=...
-# Quartus Analysis & Synthesis should NOT define SIMULATION.
+# Questa/ModelSim RTL simulation script for the RISC-V core
+
+# Sim only
 
 transcript on
 
-# ------------------------------------------------------------
-# Clean old simulation library
-# ------------------------------------------------------------
-
+# Old simulation library
 if {[file exists work]} {
     puts "INFO: Removing old work library"
     vdel -lib work -all
@@ -32,9 +14,7 @@ if {[file exists work]} {
 vlib work
 vmap work work
 
-# ------------------------------------------------------------
-# Defaults, overridable from Makefile
-# ------------------------------------------------------------
+# Defaults from Makefile
 
 if {![info exists TB_SRC]} {
     set TB_SRC "tests/TB_core/TB_core.sv"
@@ -60,21 +40,16 @@ puts "INFO: Memory file:      $MEM_FILE"
 puts "INFO: Wave script:      $WAVE_DO"
 puts "------------------------------------------------------------"
 
-# ------------------------------------------------------------
 # Include directories
-# ------------------------------------------------------------
 
 set INCDIRS "+incdir+rtl +incdir+rtl/core +incdir+rtl/memory +incdir+rtl/utils"
 
-# ------------------------------------------------------------
 # Compile RTL
-# ------------------------------------------------------------
-# Compile packages first.
-# Then compile reusable utility modules.
-# Then compile core blocks.
-# Then memory.
-# Then the core top.
-# ------------------------------------------------------------
+# Compile packages first
+# Then compile reusable utility modules
+# Then compile core blocks
+# Then memory
+# Then the core top
 
 puts "INFO: Compiling RTL packages"
 
@@ -104,26 +79,20 @@ puts "INFO: Compiling core top"
 
 vlog -sv +define+SIMULATION $INCDIRS rtl/core/core.sv
 
-# ------------------------------------------------------------
 # Compile selected testbench
-# ------------------------------------------------------------
 
 puts "INFO: Compiling testbench: $TB_SRC"
 
 vlog -sv +define+SIMULATION $INCDIRS $TB_SRC
 
-# ------------------------------------------------------------
 # Simulate selected testbench top
-# ------------------------------------------------------------
 
 puts "INFO: Starting simulation: work.$TB_TOP"
 puts "INFO: Passing memory image with +MEM=$MEM_FILE"
 
 vsim -voptargs=+acc work.$TB_TOP +MEM=$MEM_FILE
 
-# ------------------------------------------------------------
 # Waveform setup
-# ------------------------------------------------------------
 
 view wave
 
@@ -162,9 +131,9 @@ if {$WAVE_DO ne "" && [file exists $WAVE_DO]} {
         add wave -noupdate sim:/$TB_TOP/wr
     }
 
-    # Common DUT instance names.
-    # Your TB_core_no_mem used UUT earlier.
-    # If your normal TB_core uses a different name, add it here.
+    # Common DUT instance names
+    # Your TB_core_no_mem used UUT earlier
+    # If your normal TB_core uses a different name, add it here
     set DUT_PATH ""
 
     if {[find instances sim:/$TB_TOP/UUT] ne ""} {
@@ -214,9 +183,7 @@ if {$WAVE_DO ne "" && [file exists $WAVE_DO]} {
     update
 }
 
-# ------------------------------------------------------------
 # Run simulation
-# ------------------------------------------------------------
 
 puts "INFO: Running simulation"
 run -all
