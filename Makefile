@@ -42,7 +42,7 @@ WAVE_SCRIPT ?= sim/waves/core_wave.do
 QSIM_TB_SRC ?= tests/TB_core/TB_core.sv
 QSIM_TB_TOP ?= TB_core
 
-MEM_IMG ?= $(abspath memory.mem)
+MEM_IMG ?= $(abspath rtl/memory.mem)
 
 GUI ?= 1
 
@@ -80,7 +80,7 @@ TEST_ORANGE := $(shell tput setaf 214)
 TEST_RED := $(shell tput setaf 1)
 TEST_RESET := $(shell tput sgr0)
 
-MEM_IMG ?= $(abspath sim/mem/memory.mem)
+MEM_IMG ?= $(abspath rtl/memory.mem)
 
 all: lint_all tests
 
@@ -183,7 +183,7 @@ qsim_core:
 	@$(MAKE) qsim \
 		QSIM_TB_SRC=tests/TB_core/TB_core.sv \
 		QSIM_TB_TOP=TB_core \
-		MEM_IMG=$(abspath sim/mem/memory.mem) \
+		MEM_IMG=$(abspath rtl/memory.mem) \
 		WAVE_SCRIPT=sim/waves/core_wave.do
 
 .PHONY: qsim_cli
@@ -192,7 +192,7 @@ qsim_cli:
 
 .PHONY: qsim_tb
 qsim_tb:
-	@$(MAKE) qsim MEM_IMG=$(abspath tb_only_test.mem)
+	@$(MAKE) qsim MEM_IMG=$(abspath rtl/memory.mem)
 
 .PHONY: qsim_clean
 qsim_clean:

@@ -25,7 +25,7 @@ if {![info exists TB_TOP]} {
 }
 
 if {![info exists MEM_FILE]} {
-    set MEM_FILE "memory.mem"
+    set MEM_FILE "rtl/memory.mem"
 }
 
 if {![info exists WAVE_DO]} {

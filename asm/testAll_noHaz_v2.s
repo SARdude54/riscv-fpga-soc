@@ -1,6 +1,5 @@
-#This file contains tests for R-type RISCV instructions WITH NO HAZARDS (by this I mean I added nops to prevent hazards)
+#This file contains tests for R-type RISCV instructions WITH NO HAZARDS (using nops)
 
-#You can check to see if any of your tests fail using this link: https://piazza.com/class/kbprd1f9gqj5ro?cid=13
 # If new instructions are added, there are instructions that need to be adjusted
 # For example, in the U_tests section, the first addi points to the 
 # memory address of TESTU. For every command added, the immediate values
@@ -408,10 +407,34 @@ U_tests:
 	nop
 	nop
 	
-RESET:
-	j R_tests
-	nop
-	nop
+    bne t1, t2, fail
+    nop
+    nop
+
+    j pass
+    nop
+    nop
 	
+pass:
+    addi t0, zero, 1       # pass code = 1
+    lui  t1, 0x10          # t1 = 0x00010000
+    nop
+    nop
+    sw   t0, 0(t1)         # MMIO write: pass
+    nop
+    nop
+    j pass
+    nop
+    nop
+
 fail:
-	j fail
+    addi t0, zero, 2       # fail code = 2
+    lui  t1, 0x10          # t1 = 0x00010000
+    nop
+    nop
+    sw   t0, 0(t1)         # MMIO write: fail
+    nop
+    nop
+    j fail
+    nop
+    nop
