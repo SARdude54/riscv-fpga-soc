@@ -99,10 +99,10 @@
       if (MEM_RDEN1)                       // need EN for extra load cycle to not change instruction
         MEM_DOUT1 <= memory[MEM_ADDR1];
 
-      if (MEM_RDEN2)                       // Read word from memory
+      if (MEM_RDEN2)
         memReadWord <= memory[wordAddr2];
     end
-       
+	 
     // Change the data word into sized bytes and sign extend
     always_comb begin
   
@@ -133,14 +133,14 @@
  
     // Memory Mapped IO
     always_comb begin
-      if(MEM_ADDR2 >= 32'h00010000) begin  // external address range
+      if(MEM_ADDR2 >= 32'h1100_0000) begin  // external address range
         IO_WR = MEM_WE2;                 // IO Write
         MEM_DOUT2 = ioBuffer;            // IO read from buffer
         weAddrValid = 0;                 // address beyond memory range
       end
       else begin
         IO_WR = 0;                  // not MMIO
-        MEM_DOUT2 = memReadSized;   // output sized and sign extended data
+        MEM_DOUT2 = memReadWord;   // output sized and sign extended data
         weAddrValid = MEM_WE2;      // address in valid memory range
       end
     end

@@ -22,7 +22,7 @@ module RegFile(
 
 		//Create register flip flop while ensuring that register
 		//0 (x0) is never written to and remains 0.
-		always_ff@(posedge clk) begin
+		always_ff@(negedge clk) begin
 			if (rst == 1'b1) begin
 				for(int i = 0; i < 32; ++i) begin
 					ram[i] <= 32'b0;

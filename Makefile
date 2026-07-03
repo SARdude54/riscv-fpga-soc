@@ -178,7 +178,6 @@ qsim:
 	$(VSIM) $(VSIM_MODE) -do "set MEM_FILE {$(MEM_IMG)}; set WAVE_DO {$(WAVE_SCRIPT)}; set TB_SRC {$(QSIM_TB_SRC)}; set TB_TOP {$(QSIM_TB_TOP)}; do $(QSIM_SCRIPT)"
 
 .PHONY: qsim_core
-.PHONY: qsim_core
 qsim_core:
 	@$(MAKE) qsim \
 		QSIM_TB_SRC=tests/TB_core/TB_core.sv \

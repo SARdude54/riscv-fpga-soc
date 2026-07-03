@@ -6,9 +6,11 @@ module TB_core;
   logic [31:0] in, out, addr;
 
   localparam int TIMEOUT_CYCLES = 20000;
-  localparam logic [31:0] TEST_STATUS_ADDR = 32'h0001_0000;
+  localparam logic [31:0] TEST_STATUS_ADDR = 32'h1100_0000;
   localparam logic [31:0] PASS_CODE = 32'd1;
   localparam logic [31:0] FAIL_CODE = 32'd2;
+  localparam logic [31:0] PASS_LABEL = 32'h000004fc;
+  localparam logic [31:0] FAIL_LABEL = 32'h00000520;
 
   // DUT
   core UUT (
@@ -47,6 +49,14 @@ module TB_core;
     $finish;
   end
 
+  // prev pc
+  logic [31:0] pc;
+  logic [31:0] pc_prev1;
+  logic [31:0] pc_prev2;
+  logic [31:0] pc_prev3;
+  logic [31:0] pc_prev4;
+
+
 
 // MMIO completion monitor
   always_ff @(posedge clk) begin
@@ -67,5 +77,39 @@ module TB_core;
       end
     end
   end
+
+// PC mointor
+always_ff @(posedge clk) begin
+  if(rst) begin
+    pc <= 32'h0;
+    pc_prev1 <= 32'h0;
+    pc_prev2 <= 32'h0;
+    pc_prev3 <= 32'h0;
+    pc_prev4 <= 32'h0;
+  end
+
+  else begin
+
+    pc_prev4 <= pc_prev3;
+    pc_prev3 <= pc_prev2;
+    pc_prev2 <= pc_prev1;
+    pc_prev1 <= pc;
+    pc <= UUT.pc;
+
+    if(UUT.pc == PASS_LABEL) begin
+      $display("PASS: RV32I reached pass label");
+    end
+    else if (UUT.pc == FAIL_LABEL) begin
+      $display("FAIL: RV32I reached fail label");
+      $display("PC HISTORY");
+      $display("PC: %h", pc);
+      $display("PC Prev1: %h", pc_prev1);
+      $display("PC Prev2: %h", pc_prev2);
+      $display("PC Prev3: %h", pc_prev3);
+      $display("PC Prev4: %h", pc_prev4);
+      $finish;
+    end
+  end
+end
 
 endmodule

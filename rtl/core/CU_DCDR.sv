@@ -4,6 +4,9 @@ module CU_DCDR(
     input logic IR_FUNC7,
     input logic [6:0] IR_OPCODE,
     input logic [2:0] IR_FUNC3,
+	 input logic br_eq,
+	 input logic br_lt,
+	 input logic br_ltu,
 
     output logic [3:0] ALU_FUN,
     output logic ALU_SRCA,
@@ -12,7 +15,8 @@ module CU_DCDR(
     output logic [1:0] RF_WR_SEL,
     output logic REG_WRITE,
     output logic MEM_WE2,
-    output logic MEM_RDEN2
+    output logic MEM_RDEN2,
+	 output logic BRANCH
     );
     
     //Create always comb clock for decoder logic
@@ -26,10 +30,11 @@ module CU_DCDR(
         ALU_SRCA = 1'b0;
         ALU_SRCB = 2'b00;
         PC_SOURCE = 2'b00;
-        RF_WR_SEL = 2'b00;
+        RF_WR_SEL = 2'b11;
         REG_WRITE = 1'b0;
         MEM_WE2 = 1'b0;
         MEM_RDEN2 = 1'b0;
+		  BRANCH = 1'b0;
         
         
         //Case statement depending on the opcode for the 
@@ -38,7 +43,7 @@ module CU_DCDR(
             7'b0010111: begin // AUIPC
                 ALU_SRCA = 1'b1;
                 ALU_SRCB = 2'b11;
-                RF_WR_SEL = 2'b11;
+                RF_WR_SEL = 2'b00;
                 REG_WRITE = 1'b1;
             end
             7'b1101111: begin // JAL
@@ -55,20 +60,20 @@ module CU_DCDR(
             end
             7'b0000011: begin // Load Instructions
                 ALU_SRCB = 2'b01;
-                RF_WR_SEL = 2'b10;
+                RF_WR_SEL = 2'b01;
                 REG_WRITE = 1'b1;
                 MEM_RDEN2 = 1'b1;
             end
             7'b0110111: begin // LUI
                 ALU_FUN = 4'b1001; //lui copy
                 ALU_SRCA = 1'b1;
-                RF_WR_SEL = 2'b11;
+                RF_WR_SEL = 2'b00;
                 REG_WRITE = 1'b1;
             end
             7'b0010011: begin // I-Type
                 //set constants for all I-type instructions
                 ALU_SRCB = 2'b01;
-                RF_WR_SEL = 2'b11;
+                RF_WR_SEL = 2'b00;
                 REG_WRITE = 1'b1;
                 
                 //Nested case statement
@@ -98,7 +103,7 @@ module CU_DCDR(
                 //set constants for all R-types;
                 //ALU_FUN is just the concatenation of
                 //the 30th bit and the function 3 bits
-                RF_WR_SEL = 2'b11;
+                RF_WR_SEL = 2'b00;
                 ALU_FUN = {IR_FUNC7, IR_FUNC3};
                 REG_WRITE = 1'b1;
             end
@@ -110,24 +115,61 @@ module CU_DCDR(
                 //for the branch instructions.
                 case(IR_FUNC3)
                     3'b000: begin   //BEQ
-                            PC_SOURCE = 2'b10;
+                            
+									 if(br_eq) begin
+										PC_SOURCE = 2'b10;
+										BRANCH = 1;
+									 end else begin
+										PC_SOURCE = 2'b00;
+										BRANCH = 0;
+									 end
                     end
                     3'b001: begin   //BNE
-                            PC_SOURCE = 2'b10;
+                            if(!br_eq) begin
+										PC_SOURCE = 2'b10;
+										BRANCH = 1;
+									 end else begin
+										PC_SOURCE = 2'b00;
+										BRANCH = 0;
+									 end
                     end
                     3'b100: begin   //BLT
-                            PC_SOURCE = 2'b10;
+                            if(br_lt) begin
+										PC_SOURCE = 2'b10;
+										BRANCH = 1;
+									 end else begin
+										PC_SOURCE = 2'b00;
+										BRANCH = 0;
+									 end
                     end
                     3'b101: begin   //BGE
-                            PC_SOURCE = 2'b10;
+                            if(br_eq | !br_lt) begin
+										PC_SOURCE = 2'b10;
+										BRANCH = 1;
+									 end else begin
+										PC_SOURCE = 2'b00;
+										BRANCH = 0;
+									 end
 
                     end
                     3'b110: begin   //BLTU
-                            PC_SOURCE = 2'b10;
+                            if(br_ltu) begin
+										PC_SOURCE = 2'b10;
+										BRANCH = 1;
+									 end else begin
+										PC_SOURCE = 2'b00;
+										BRANCH = 0;
+									 end
 
                     end
                     3'b111: begin   //BGEU
-                            PC_SOURCE = 2'b10;
+                            if(br_eq | !br_ltu) begin
+										PC_SOURCE = 2'b10;
+										BRANCH = 1;
+									 end else begin
+										PC_SOURCE = 2'b00;
+										BRANCH = 0;
+									 end
 
                     end
                     default: begin
