@@ -43,6 +43,7 @@ QSIM_TB_SRC ?= tests/TB_core/TB_core.sv
 QSIM_TB_TOP ?= TB_core
 
 MEM_IMG ?= $(abspath rtl/memory.mem)
+BOOT_ROM_HEX ?= $(abspath mem/boot_rom.hex)
 
 GUI ?= 1
 
@@ -173,8 +174,10 @@ qsim:
 	@printf "Script:   $(QSIM_SCRIPT)\n"
 	@printf "TB_SRC:   $(QSIM_TB_SRC)\n"
 	@printf "TB_TOP:   $(QSIM_TB_TOP)\n"
-	@printf "MEM_IMG:  $(MEM_IMG)\n"
+	@printf "MEM_IMG:       $(MEM_IMG)\n"
+	@printf "BOOT_ROM_HEX:  $(BOOT_ROM_HEX)\n"
 	@printf "Wave DO:  $(WAVE_SCRIPT)\n"
+	
 	$(VSIM) $(VSIM_MODE) -do "set MEM_FILE {$(MEM_IMG)}; set WAVE_DO {$(WAVE_SCRIPT)}; set TB_SRC {$(QSIM_TB_SRC)}; set TB_TOP {$(QSIM_TB_TOP)}; do $(QSIM_SCRIPT)"
 
 .PHONY: qsim_core

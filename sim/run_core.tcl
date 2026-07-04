@@ -25,7 +25,7 @@ if {![info exists TB_TOP]} {
 }
 
 if {![info exists MEM_FILE]} {
-    set MEM_FILE "rtl/memory.mem"
+    set MEM_FILE "mem/memory.hex"
 }
 
 if {![info exists WAVE_DO]} {
@@ -74,6 +74,15 @@ vlog -sv +define+SIMULATION $INCDIRS rtl/core/CU_FSM.sv
 puts "INFO: Compiling memory modules"
 
 vlog -sv +define+SIMULATION $INCDIRS rtl/memory/Memory.sv
+
+puts "INFO: Compiling Intel FPGA simulation libraries"
+
+vlog /home/sardude54/intelFPGA_lite/quartus/eda/sim_lib/altera_mf.v
+
+puts "INFO: Compiling generated Boot ROM IP"
+
+vlog -sv +define+SIMULATION $INCDIRS IP/simulation/submodules/boot_rom_onchip_memory2_0.v
+vlog -sv +define+SIMULATION $INCDIRS IP/simulation/boot_rom.v
 
 puts "INFO: Compiling core top"
 
