@@ -13,7 +13,7 @@ module core(input clk,
 );           
 
 	wire [31:0] I_immed,S_immed,U_immed, B_immed, J_immed;
-	wire [31:0] IR;
+	wire [31:0] IR, old_IR;
 	
 	wire mem_op,memRead;
 	wire [1:0] pc_source;
@@ -44,14 +44,29 @@ module core(input clk,
 		.data_out(pc)
 		);
 	
-	wire [31:0] mem_data;	
+	wire [31:0] mem_data;
+
+	boot_rom Instr_Mem(
+		.clk_clk(clk),           //     clk.clk
+		.reset_reset_n(!RST),     //   reset.reset_n
+		.reset_1_reset(RST),     // reset_1.reset
+		.reset_1_reset_req(RST), //        .reset_req
+		.si_address(pc[14:2]),        //      si.address
+		.si_debugaccess(0),    //        .debugaccess
+		.si_clken(memRead1),          //        .clken
+		.si_chipselect(1),     //        .chipselect TODO: Should be high when PC is inside ROM range
+		.si_write('0),          //        .write
+		.si_readdata(IR),       //        .readdata
+		.si_writedata('0),      //        .writedata
+		.si_byteenable(4'b1111)      //        .byteenable
+	);
 	
 	Memory memory(
 	.MEM_CLK (clk),
-	.MEM_RDEN1 (memRead1),        // always read new instruction
+	.MEM_RDEN1 (0),        // always read new instruction
 	.MEM_RDEN2 (mem_inst.memRead2),        // read enable data
 	.MEM_WE2 (mem_inst.memWrite),          // write enable.
-	.MEM_ADDR1 (pc[15:2]), // Instruction Memory word Addr (Connect to PC[15:2])
+	.MEM_ADDR1 (12'b0), // Instruction Memory word Addr (Connect to PC[15:2])
 	.MEM_ADDR2 (mem_inst.alu_result), // Data Memory Addr
 	.MEM_DIN2 (mem_inst.rs2),  // Data to save
 	.MEM_SIZE (mem_inst.mem_type),   // 0-Byte, 1-Half, 2-Word
@@ -59,7 +74,7 @@ module core(input clk,
 	.IO_IN (iobus_in),     // Data from IO
 	//output
 	.IO_WR (iobus_wr),     // IO 1-write 0-read
-	.MEM_DOUT1 (IR),  // Instruction
+	.MEM_DOUT1 (old_IR),  // Instruction
 	.MEM_DOUT2 (mem_data)); // Data
 	
 	reg [31:0] if_pc_q;

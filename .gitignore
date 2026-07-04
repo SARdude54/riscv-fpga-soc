@@ -19,6 +19,16 @@ output_files/
 *_nativelink_simulation.rpt
 
 # ----------------------------
+# Platform Designer / Quartus temporary files
+# ----------------------------
+.qsys_edit/
+*.html
+*.xml
+*.cmp
+*.sip
+/IP/
+
+# ----------------------------
 # Questa / ModelSim generated
 # ----------------------------
 work/
@@ -28,7 +38,7 @@ vsim.wlf
 *.vcd
 modelsim.ini
 sim_log.txt
-simulation/
+/simulation/
 
 # ----------------------------
 # Verilator / Icarus generated
