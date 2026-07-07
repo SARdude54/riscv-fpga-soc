@@ -34,6 +34,8 @@ SIMULATOR_SRCS := $(foreach src,$(ORDERED_SRCS),$(realpath $(src))) *.sv
 # Questa / Quartus Prime simulation
 QUESTA_HOME ?= /home/sardude54/intelFPGA_lite/questa_fse/linux_x86_64
 VSIM        ?= $(QUESTA_HOME)/vsim
+SCRATCHPAD_HEX ?= $(abspath IP/scratchpad/simulation/submodules/scratchpad_ram_scratchpad.hex)
+BOOT_ROM_IP_HEX ?= $(abspath IP/boot_rom/simulation/submodules/boot_rom_boot_rom.hex)
 
 QSIM_SCRIPT ?= sim/run_core.tcl
 WAVE_SCRIPT ?= sim/waves/core_wave.do
@@ -171,13 +173,14 @@ openroad:
 .PHONY: qsim
 qsim:
 	@printf "\n$(GREEN)$(BOLD) ----- Running Questa Simulation ----- $(RESET)\n"
-	@printf "Script:   $(QSIM_SCRIPT)\n"
-	@printf "TB_SRC:   $(QSIM_TB_SRC)\n"
-	@printf "TB_TOP:   $(QSIM_TB_TOP)\n"
+	@printf "Script:        $(QSIM_SCRIPT)\n"
+	@printf "TB_SRC:        $(QSIM_TB_SRC)\n"
+	@printf "TB_TOP:        $(QSIM_TB_TOP)\n"
 	@printf "MEM_IMG:       $(MEM_IMG)\n"
 	@printf "BOOT_ROM_HEX:  $(BOOT_ROM_HEX)\n"
-	@printf "Wave DO:  $(WAVE_SCRIPT)\n"
-	
+	@printf "SCRATCHPAD_HEX: $(SCRATCHPAD_HEX)\n"
+	@printf "Wave DO:       $(WAVE_SCRIPT)\n"
+	@cp -f "$(SCRATCHPAD_HEX)" ./scratchpad_ram_scratchpad.hex
 	$(VSIM) $(VSIM_MODE) -do "set MEM_FILE {$(MEM_IMG)}; set WAVE_DO {$(WAVE_SCRIPT)}; set TB_SRC {$(QSIM_TB_SRC)}; set TB_TOP {$(QSIM_TB_TOP)}; do $(QSIM_SCRIPT)"
 
 .PHONY: qsim_core

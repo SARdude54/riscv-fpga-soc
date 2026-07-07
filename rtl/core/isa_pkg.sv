@@ -25,22 +25,33 @@ typedef struct packed{
     logic [4:0] rd_addr;
     logic [31:0] rs1;
     logic [31:0] rs2;
+	 logic [31:0] rs2_forwarded;
 	 logic [31:0] aluAin;
 	 logic [31:0] aluBin;
     logic [31:0] alu_result;
     logic [31:0] rd;
-    // logic rs1_used;
-    // logic rs2_used;
+    logic rs1_used;
+    logic rs2_used;
     logic rd_used;
+	 logic opA_sel;
+	 logic [1:0] opB_sel;
     logic [3:0] alu_fun;
     logic [31:0] mem_data;
     logic memWrite;
     logic memRead2;
+	 logic romRead;
+	 logic scratchRead;
+	 logic [2:0] mem_data_sel;
     logic regWrite;
     logic [1:0] rf_wr_sel;
     logic [1:0] mem_type;  //sign
     logic mem_size;
     logic [31:0] pc;
+	 logic [31:0] I_immed;
+	 logic [31:0] S_immed;
+	 logic [31:0] U_immed; 
+	 logic [31:0] B_immed; 
+	 logic [31:0] J_immed;
 } instr_t;
     
 endpackage : isa_pkg

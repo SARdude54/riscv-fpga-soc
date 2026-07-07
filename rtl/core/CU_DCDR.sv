@@ -4,20 +4,15 @@ module CU_DCDR(
     input logic IR_FUNC7,
     input logic [6:0] IR_OPCODE,
     input logic [2:0] IR_FUNC3,
-	 input logic br_eq,
-	 input logic br_lt,
-	 input logic br_ltu,
 
     output logic [3:0] ALU_FUN,
     output logic ALU_SRCA,
     output logic [1:0] ALU_SRCB,
-    output logic [1:0] PC_SOURCE,
     output logic [1:0] RF_WR_SEL,
     output logic REG_WRITE,
     output logic MEM_WE2,
-    output logic MEM_RDEN2,
-	 output logic BRANCH
-    );
+    output logic MEM_RDEN2
+	 );
     
     //Create always comb clock for decoder logic
 
@@ -29,12 +24,10 @@ module CU_DCDR(
         ALU_FUN = 4'b0000;
         ALU_SRCA = 1'b0;
         ALU_SRCB = 2'b00;
-        PC_SOURCE = 2'b00;
-        RF_WR_SEL = 2'b11;
+        RF_WR_SEL = 2'b10;
         REG_WRITE = 1'b0;
         MEM_WE2 = 1'b0;
         MEM_RDEN2 = 1'b0;
-		  BRANCH = 1'b0;
         
         
         //Case statement depending on the opcode for the 
@@ -47,12 +40,12 @@ module CU_DCDR(
                 REG_WRITE = 1'b1;
             end
             7'b1101111: begin // JAL
-                PC_SOURCE = 2'b11;
                 REG_WRITE = 1'b1;
+					 RF_WR_SEL = 2'b10;
             end
             7'b1100111: begin // JALR
-                PC_SOURCE = 2'b01;
                 REG_WRITE = 1'b1;
+					 RF_WR_SEL = 2'b10;
             end
             7'b0100011: begin // Store Instructions
                 ALU_SRCB = 2'b10;
@@ -106,76 +99,6 @@ module CU_DCDR(
                 RF_WR_SEL = 2'b00;
                 ALU_FUN = {IR_FUNC7, IR_FUNC3};
                 REG_WRITE = 1'b1;
-            end
-            7'b1100011: begin // B-Type
-                //nested case statement dependent on the
-                //function three bits.
-                //Because there are six real branch instructions, there
-                //are six pairs of if-else statements in each of six cases
-                //for the branch instructions.
-                case(IR_FUNC3)
-                    3'b000: begin   //BEQ
-                            
-									 if(br_eq) begin
-										PC_SOURCE = 2'b10;
-										BRANCH = 1;
-									 end else begin
-										PC_SOURCE = 2'b00;
-										BRANCH = 0;
-									 end
-                    end
-                    3'b001: begin   //BNE
-                            if(!br_eq) begin
-										PC_SOURCE = 2'b10;
-										BRANCH = 1;
-									 end else begin
-										PC_SOURCE = 2'b00;
-										BRANCH = 0;
-									 end
-                    end
-                    3'b100: begin   //BLT
-                            if(br_lt) begin
-										PC_SOURCE = 2'b10;
-										BRANCH = 1;
-									 end else begin
-										PC_SOURCE = 2'b00;
-										BRANCH = 0;
-									 end
-                    end
-                    3'b101: begin   //BGE
-                            if(br_eq | !br_lt) begin
-										PC_SOURCE = 2'b10;
-										BRANCH = 1;
-									 end else begin
-										PC_SOURCE = 2'b00;
-										BRANCH = 0;
-									 end
-
-                    end
-                    3'b110: begin   //BLTU
-                            if(br_ltu) begin
-										PC_SOURCE = 2'b10;
-										BRANCH = 1;
-									 end else begin
-										PC_SOURCE = 2'b00;
-										BRANCH = 0;
-									 end
-
-                    end
-                    3'b111: begin   //BGEU
-                            if(br_eq | !br_ltu) begin
-										PC_SOURCE = 2'b10;
-										BRANCH = 1;
-									 end else begin
-										PC_SOURCE = 2'b00;
-										BRANCH = 0;
-									 end
-
-                    end
-                    default: begin
-                        PC_SOURCE = 2'b00;
-                    end
-                endcase
             end
             default: begin end
         endcase
