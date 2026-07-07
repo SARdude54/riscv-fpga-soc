@@ -70,6 +70,9 @@ vlog -sv +define+SIMULATION $INCDIRS rtl/core/BRANCH_ADDR_GEN.sv
 vlog -sv +define+SIMULATION $INCDIRS rtl/core/BRANCH_COND_GEN.sv
 vlog -sv +define+SIMULATION $INCDIRS rtl/core/CU_DCDR.sv
 vlog -sv +define+SIMULATION $INCDIRS rtl/core/CU_FSM.sv
+vlog -sv +define+SIMULATION $INCDIRS rtl/core/LoadWaitFSM.sv
+vlog -sv +define+SIMULATION $INCDIRS rtl/core/DataHazardUnit.sv
+
 
 puts "INFO: Compiling memory modules"
 
@@ -81,8 +84,13 @@ vlog /home/sardude54/intelFPGA_lite/quartus/eda/sim_lib/altera_mf.v
 
 puts "INFO: Compiling generated Boot ROM IP"
 
-vlog -sv +define+SIMULATION $INCDIRS IP/simulation/submodules/boot_rom_onchip_memory2_0.v
-vlog -sv +define+SIMULATION $INCDIRS IP/simulation/boot_rom.v
+vlog -sv +define+SIMULATION $INCDIRS IP/boot_rom/simulation/submodules/boot_rom_boot_rom.v
+vlog -sv +define+SIMULATION $INCDIRS IP/boot_rom/simulation/boot_rom.v
+
+puts "INFO: Compiling generated Scratchpad RAM IP"
+
+vlog -sv +define+SIMULATION $INCDIRS IP/scratchpad/simulation/submodules/scratchpad_ram_scratchpad.v
+vlog -sv +define+SIMULATION $INCDIRS IP/scratchpad/simulation/scratchpad_ram.v
 
 puts "INFO: Compiling core top"
 
