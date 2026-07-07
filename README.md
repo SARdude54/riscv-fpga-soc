@@ -22,7 +22,7 @@ The DE10-Lite board uses the 10M50DAF484C7G.
 
 ## Memory Map
 
-### Overal Memory Map
+### Overall Memory Map
 
 Planned memory map. SDRAM regions not implemented yet. 
 
