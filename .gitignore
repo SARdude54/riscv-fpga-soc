@@ -64,11 +64,12 @@ a.out
 # Software / RISC-V build outputs
 # ----------------------------
 /asm/build/
-/asm/buld/
+/asm/build/
 *.elf
 *.dump
 *.bin
 *.hex.tmp
+*.hex
 *.map
 
 # generated memory images, only if they are rebuilt by make
