@@ -1,5 +1,7 @@
 `timescale 1ns / 1ps
 
+import isa_pkg::*;
+
 module ALU(
     input [31:0] srcA,
     input [31:0] srcB,
@@ -10,18 +12,18 @@ module ALU(
     always @(*)
         begin
         case(alu_fun)
-        4'b0000: result = srcA + srcB; //add
-        4'b1000: result = srcA - srcB; //sub
-        4'b0110: result = srcA | srcB; //or
-        4'b0111: result = srcA & srcB; //and        
-        4'b0100: result = srcA ^ srcB; //xor
-        4'b0101: result = srcA >> srcB[4:0]; //srl
-        4'b0001: result = srcA << srcB[4:0]; //sll
-        4'b1101: result = $signed(srcA) >>> srcB[4:0]; //sra
+        ALU_ADD: result = srcA + srcB; //add
+        ALU_SUB: result = srcA - srcB; //sub
+        ALU_OR: result = srcA | srcB; //or
+        ALU_AND: result = srcA & srcB; //and        
+        ALU_XOR: result = srcA ^ srcB; //xor
+        ALU_SRL: result = srcA >> srcB[4:0]; //srl
+        ALU_SLL: result = srcA << srcB[4:0]; //sll
+        ALU_SRA: result = $signed(srcA) >>> srcB[4:0]; //sra
    //slt  
-        4'b0010: result = ($signed(srcA) < $signed(srcB))? 1:0;
-        4'b0011: result = srcA < srcB ? 1:0;//sltu
-        4'b1001: result = srcA; // lui-copy
+        ALU_SLT: result = ($signed(srcA) < $signed(srcB))? 1:0;
+        ALU_SLTU: result = srcA < srcB ? 1:0;//sltu
+        ALU_COPY: result = srcA; // lui-copy
         default: result = 32'hDEADBEEF;
         endcase
         end
