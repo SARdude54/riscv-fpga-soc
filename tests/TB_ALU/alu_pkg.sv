@@ -4,5 +4,6 @@ package alu_pkg;
     import isa_pkg::*;
     `include "uvm_macros.svh"
     `include "alu_transaction.sv"
+    `include "alu_sequence.sv"
 
 endpackage

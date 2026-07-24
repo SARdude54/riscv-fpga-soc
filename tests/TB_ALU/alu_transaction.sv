@@ -4,6 +4,8 @@ class alu_transaction extends uvm_sequence_item;
 
     // note to self:    uvm_compnent_utils is when UVM class is a component
     //                  uvm_object_utils is when UVM class is an objec
+ 
+    // transaction represents one operation
 
     `uvm_object_utils(alu_transaction)
 
