@@ -34,6 +34,17 @@ class alu_driver extends uvm_driver #(alu_transaction);
         
             seq_item_port.get_next_item(tx);
 
+            `uvm_info(
+                "ALU_DRIVER",
+                $sformatf(
+                    "Driving srcA=0x%08h srcB=0x%08h alu_fun=%s",
+                    tx.srcA,
+                    tx.srcB,
+                    tx.alu_fun.name()
+                ),
+                UVM_LOW
+            )
+
             vif.srcA = tx.srcA;
             vif.srcB = tx.srcB;
             vif.alu_fun = tx.alu_fun;
