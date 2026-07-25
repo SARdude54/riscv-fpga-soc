@@ -5,18 +5,21 @@ An RV32IMAC implementation on the DE10-Lite FPGA Board.
 
 The DE10-Lite board uses the 10M50DAF484C7G.
 
-## Background
-## ISA Extension
-## Design Goals
 ## Current Status
 
-* Project created on 5/24/2026
+* Currently using UVM on ModelSim for hardware verification
+    * Using the ALU as a starter for learning UVM
 * Classic 5-stage RV32I pipeline with data and control hazards. No branch predictor or CSR yet. 
 * Current core and GNU link script supports boot ROM and scratchpad RAM only
 
 ## Next Steps
-* Better Documentation
+* Document UVM
+* Create diagram for SDRAM proposal
 * Integrate SDRAM
+
+<!-- ## Background
+## ISA Extension
+## Design Goals -->
 
 ## Schematic
 
