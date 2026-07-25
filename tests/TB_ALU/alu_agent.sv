@@ -7,6 +7,7 @@ class alu_agent extends uvm_agent;
 
     alu_sequencer sequencer;
     alu_driver driver;
+    alu_monitor monitor;
 
     function new(string name = "alu_agent", uvm_component parent = null);
         super.new(name, parent);
@@ -24,6 +25,11 @@ class alu_agent extends uvm_agent;
             "driver",
             this
         ); 
+
+        monitor = alu_monitor::type_id::create(
+            "monitor",
+            this
+        );
 
     endfunction
 
