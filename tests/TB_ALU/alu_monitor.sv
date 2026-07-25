@@ -66,7 +66,7 @@ class alu_monitor extends uvm_monitor;
             `uvm_info(
                 "ALU_MONITOR",
                 $sformatf(
-                    "Observed srcA=0x%08h srcB=0x%08h alu_fun=0x%08h result=0x%08h",
+                    "Observed srcA=0x%08h srcB=0x%08h alu_fun=%s result=0x%08h",
                     tx.srcA,
                     tx.srcB,
                     tx.alu_fun.name(),
