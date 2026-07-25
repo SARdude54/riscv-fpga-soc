@@ -3,7 +3,7 @@ class alu_test extends uvm_test;
 
     `uvm_component_utils(alu_test)
 
-    alu_agent agent;
+    alu_env env;
 
 
     function new(
@@ -19,8 +19,8 @@ class alu_test extends uvm_test;
 
         super.build_phase(phase);
 
-        agent = alu_agent::type_id::create(
-            "agent",
+        e = alu_env::type_id::create(
+            "env",
             this
         );
 
@@ -34,7 +34,7 @@ class alu_test extends uvm_test;
 
         seq = alu_sequence::type_id::create("seq");
 
-        seq.start(agent.sequencer);
+        seq.start(env.agent.sequencer);
 
         phase.drop_objection(this);
 
